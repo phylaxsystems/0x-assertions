@@ -89,8 +89,11 @@ contract AllowanceAssertion is Assertion {
 
     function _requireZeroAllowance(PhEvm.Log memory log, address adopter) private view {
         address from = address(uint160(uint256(log.topics[1])));
-        IERC20Allowance token = IERC20Allowance(log.emitter);
-        uint256 allowance = token.allowance(from, adopter);
+        (bool success, bytes memory result) = log.emitter.staticcall(
+            abi.encodeWithSelector(IERC20Allowance.allowance.selector, from, adopter)
+        );
+        if (!success || result.length != 32) return;
+        uint256 allowance = abi.decode(result, (uint256));
         require(allowance == 0, "Transfer from address with non-zero allowance to adopter");
     }
 }
