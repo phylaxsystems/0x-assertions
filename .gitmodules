@@ -1,0 +1,6 @@
+[submodule "lib/credible-std"]
+	path = lib/credible-std
+	url = https://github.com/phylaxsystems/credible-std
+[submodule "lib/forge-std"]
+	path = lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
